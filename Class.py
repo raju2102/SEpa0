@@ -1,9 +1,11 @@
 class User:
-    def __init__(self, username, name, status, password) -> None:
+    SessionKey = "NA"
+    def __init__(self, username, name, status, password, sesskey) -> None:
         self.Username = username
         self.Name = name
         self.Password = password
         self.Status = status
+        self.SessionKey = sesskey
 
     def getUsername(self):
         return self.Username

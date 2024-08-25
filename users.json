@@ -1,0 +1,18 @@
+{
+    "users": {
+        "RajaKarthik": {
+            "name": "RajaKarthik",
+            "username": "raju",
+            "password": "R@ju3210",
+            "status": "sleeping",
+            "sesskey": "qwertyuiop"
+        },
+        "Nitish": {
+            "name": "Nitish",
+            "username": "nit",
+            "password": "nit6867",
+            "status": "exam",
+            "sesskey": "asdfghjkl"
+        }
+    }
+}
