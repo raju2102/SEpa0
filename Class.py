@@ -3,12 +3,12 @@ import random
 
 class User:
     SessionKey = "NA"
-    def __init__(self, username, name, status, password, sesskey) -> None:
-        self.Username = username
-        self.Name = name
-        self.Password = password
-        self.Status = status
-        self.SessionKey = sesskey
+    def __init__(self, Username, Name, Status, Password, SessionKey) -> None:
+        self.Username = Username
+        self.Name = Name
+        self.Password = Password
+        self.Status = Status
+        self.SessionKey = SessionKey
 
     def getUsername(self):
         return self.Username

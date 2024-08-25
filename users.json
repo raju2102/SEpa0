@@ -1,18 +1,11 @@
 {
     "users": {
-        "RajaKarthik": {
-            "name": "Alice",
-            "username": "alice1",
-            "password": "password",
-            "status": "i <3 bob",
-            "sesskey": "qwertyuiop"
-        },
-        "Nitish": {
-            "name": "Nitish",
-            "username": "pcr",
-            "password": "#hacker's <\\\\3 ~2 m@ny $ecrets!",
-            "status": "exam",
-            "sesskey": "NA"
+        "pcr": {
+            "Username": "pcr",
+            "Name": "anonymous",
+            "Password": "#hacker's <\\\\3 ~2 m@ny $ecrets!",
+            "Status": "none",
+            "SessionKey": "5cpQAH9fkG7B"
         }
     }
 }
