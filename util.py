@@ -69,3 +69,15 @@ def joinInputs():
     newUserData["Status"] = input("status: ")
 
     return newUserData
+
+
+def createNewUser(newUserData, userMap):
+    for _, value in userMap.items():
+        if newUserData["Username"] == value.getUsername():
+            print(value.getUsername())
+            print("username already exists. please try again with different username")
+            return False
+    userMap[newUserData["Username"]] = Class.User(newUserData["Username"], newUserData["Name"], newUserData["Status"], newUserData["Password"], "NA")
+    userMap[newUserData["Username"]].generateSessionkey()
+    createSuccessMsg(userMap[newUserData["Username"]])
+    return userMap

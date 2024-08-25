@@ -2,7 +2,7 @@ import Class
 import sys
 import json
 import os
-from util import Flush, loginSuccessMsg, welcomeMsg, readData, createSuccessMsg, joinInputs
+from util import Flush, loginSuccessMsg, welcomeMsg, readData, joinInputs, createNewUser
 
 
 def loginFlow(Args, userMap):
@@ -43,16 +43,6 @@ def createFlow(Args, userMap):
         requiredKeyList[key] = creds[start+len(value): end]
         return createNewUser(requiredKeyList, userMap)
 
-def createNewUser(newUserData, userMap):
-    for _, value in userMap.items():
-        if newUserData["Username"] == value.getUsername():
-            print(value.getUsername())
-            print("username already exists. please try again with different username")
-            return False
-    userMap[newUserData["Username"]] = Class.User(newUserData["Username"], newUserData["Name"], newUserData["Status"], newUserData["Password"], "NA")
-    userMap[newUserData["Username"]].generateSessionkey()
-    createSuccessMsg(userMap[newUserData["Username"]])
-    return userMap
 
 def joinFlow(Args, userMap):
     if len(Args) > 1:
