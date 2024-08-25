@@ -1,3 +1,6 @@
+import string
+import random
+
 class User:
     SessionKey = "NA"
     def __init__(self, username, name, status, password, sesskey) -> None:
@@ -18,6 +21,14 @@ class User:
     
     def getStatus(self):
         return self.Status
+    
+    def getSessionkey(self):
+        return self.SessionKey
+    
+    def generateSessionkey(self):
+        if self.SessionKey == "NA":
+            self.SessionKey = ''.join(random.choices(string.ascii_lowercase + 
+                                                 string.digits + string.ascii_uppercase, k=12))
     
     def modifyUsername(self, uname):
         self.Username = uname
