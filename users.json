@@ -1,11 +1,3 @@
 {
-    "users": {
-        "pcr": {
-            "Username": "pcr",
-            "Name": "anonymous",
-            "Password": "#hacker's <\\\\3 ~2 m@ny $ecrets!",
-            "Status": "none",
-            "SessionKey": "5cpQAH9fkG7B"
-        }
-    }
+    "users": {}
 }

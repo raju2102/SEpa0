@@ -37,9 +37,9 @@ class User:
         self.Status = status
 
 class Session:
-    def __init__(self, sessionToken, name) -> None:
-        self.SessionToken = sessionToken
-        self.Name = name
+    def __init__(self, SessionToken, Name) -> None:
+        self.SessionToken = SessionToken
+        self.Name = Name
 
     def getName(self):
         return self.Name
