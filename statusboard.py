@@ -2,7 +2,7 @@ import Class
 import sys
 import json
 import os
-from util import Flush, loginSuccessMsg, welcomeMsg, readData, joinInputs, createNewUser
+from util import Flush, loginSuccessMsg, welcomeMsg, readData, joinInputs, createNewUser, sessionCheck
 
 
 def loginFlow(Args, userMap):
@@ -25,7 +25,6 @@ def loginFlow(Args, userMap):
         print("home: ./app")
 
 def createFlow(Args, userMap):
-    print(userMap)
     requiredKeyList = { "Username": ' username=\"',
                        "Password": ' password=\"',
                         "Name": ' name=\"', 
@@ -41,7 +40,7 @@ def createFlow(Args, userMap):
             print("invalid set of creds")
             return False
         requiredKeyList[key] = creds[start+len(value): end]
-        return createNewUser(requiredKeyList, userMap)
+    return createNewUser(requiredKeyList, userMap)
 
 
 def joinFlow(Args, userMap):
@@ -79,6 +78,11 @@ def main():
         if not userMap:
             return
         Flush(userMap)
+    elif Args[0] == "session":
+        if not sessionCheck(Args, sessionMap):
+            return
+        if len(Args) == 3 and Args[2] == "home": 
+            loginSuccessMsg(userMap[sessionMap[Args[1]].getUsername()])
         
             
 

@@ -28,7 +28,7 @@ def readData():
     sessionMap = {}
     for key, value in data["users"].items():
         if value["SessionKey"] != "NA":
-            sessionMap[value["SessionKey"]] = Class.Session(value["SessionKey"], value["Name"])
+            sessionMap[value["SessionKey"]] = Class.Session(value["SessionKey"], value["Username"])
         userMap[key] = Class.User(**value)
     return userMap, sessionMap
 
@@ -81,3 +81,15 @@ def createNewUser(newUserData, userMap):
     userMap[newUserData["Username"]].generateSessionkey()
     createSuccessMsg(userMap[newUserData["Username"]])
     return userMap
+
+def sessionCheck(Args, sessionMap):
+    if len(Args) == 1:
+        print("access denied: missing session token")
+    else:
+        if Args[1] in sessionMap.keys():
+            return True
+        else:
+            print("invalid request: invalid session token")
+            print("home: ./app")
+    return False
+    

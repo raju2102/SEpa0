@@ -1,3 +1,11 @@
 {
-    "users": {}
+    "users": {
+        "anon": {
+            "Username": "anon",
+            "Name": "anonymous",
+            "Password": "password",
+            "Status": "none",
+            "SessionKey": "hl0aXWBtEJkz"
+        }
+    }
 }
