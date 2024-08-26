@@ -1,11 +1,25 @@
 {
     "users": {
-        "anon": {
-            "Username": "anon",
-            "Name": "anonymous",
-            "Password": "password",
-            "Status": "none",
-            "SessionKey": "snompR4I0C1r"
+        "alice": {
+            "Username": "alice",
+            "Name": "Alice",
+            "Password": "hearts",
+            "Status": "talking to bob",
+            "SessionKey": "oKL9WYs6AN9F"
+        },
+        "bob": {
+            "Username": "bob",
+            "Name": "Bob",
+            "Password": "epsilon",
+            "Status": "talking to alice",
+            "SessionKey": "3bXk1Y4f7hB2"
+        },
+        "eve": {
+            "Username": "eve",
+            "Name": "Eve",
+            "Password": "seven",
+            "Status": "listening to alice and bob",
+            "SessionKey": "ejPqDGlX7BOC"
         }
     }
 }

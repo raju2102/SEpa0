@@ -69,11 +69,17 @@ def showFlow(Args, userMap, privilege, personal, personalKey):
     else:
         personDetailsWithPrivilege(userMap[Args[3]], personal, personalKey)
 
+def deleteFlow(sessionKeyToDelete, userMap, sessionMap):
+    userMap.pop(sessionMap[sessionKeyToDelete].getUsername())
+    Flush(userMap)
+    print("[account deleted]")
+    welcomeMsg()
+    return
+
 
 def main():
     nArgs = len(sys.argv)
     if nArgs == 1 or nArgs == 2 and sys.argv[1] == 'home':
-        pass
         welcomeMsg()
         return
 
@@ -94,15 +100,17 @@ def main():
         Flush(userMap)
     elif Args[0] == "show":
         showFlow(Args, userMap, False, "NA", Args[1] if len(Args)==2 else "NA")
-    elif Args[0] == "session" and len(Args) > 3:
+    elif Args[0] == "session":
         if not sessionCheck(Args, sessionMap):
             return
         if len(Args) == 3 and Args[2] == "home": 
             loginSuccessMsg(userMap[sessionMap[Args[1]].getUsername()])
         if Args[2] == "show": 
             showFlow(Args, userMap, True, sessionMap[Args[1]].getUsername()==Args[3], Args[1])
-    elif Args[0] == "session" and len(Args) == 1:
-        print("access denied: missing session token")
+        if Args[2] == "delete":
+            deleteFlow(Args[1], userMap, sessionMap)
+    elif Args[0] == 'delete':
+        print("invalid request: missing session token")
         
             
 

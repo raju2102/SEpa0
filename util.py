@@ -85,6 +85,7 @@ def createNewUser(newUserData, userMap):
 def sessionCheck(Args, sessionMap):
     if len(Args) == 1:
         print("access denied: missing session token")
+        return False
     else:
         if Args[1] in sessionMap.keys():
             return True
