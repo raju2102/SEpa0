@@ -1,3 +1,28 @@
 {
-    "users": {}
+    "users": {
+        "alice": {
+            "Username": "alice",
+            "Name": "Alice",
+            "Password": "password",
+            "Status": "talking to bob",
+            "SessionKey": "BJsDfflptLhe",
+            "UpdatedTime": "2024-08-26 09:56:02"
+        },
+        "bob": {
+            "Username": "bob",
+            "Name": "Bob",
+            "Password": "password",
+            "Status": "talking to alice",
+            "SessionKey": "ZnDQtKSRIUNC",
+            "UpdatedTime": "2024-08-26 09:56:02"
+        },
+        "eve": {
+            "Username": "eve",
+            "Name": "Eve",
+            "Password": "password",
+            "Status": "listening to alice and bob",
+            "SessionKey": "ZEdqVIGEJJFC",
+            "UpdatedTime": "2024-08-26 09:56:02"
+        }
+    }
 }

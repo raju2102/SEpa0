@@ -142,3 +142,24 @@ def personDetailsWithPrivilege(user, personal, personalKey):
     print("people: ./app '[session {0} ]people'".format(personalKey))
     print("home: ./app ['session {0}']".format(personalKey))
     
+def printPeople(userMap, privileged, sessKey, sessionMap):
+    print("People")
+    print("------")
+    listOfPeopleToPrint = userMap.keys()
+    for name in listOfPeopleToPrint:
+        print("{0} @{1} (./app 'show {1}')".format(userMap[name].getName(), userMap[name].getUsername()))
+        print("  {0}".format(userMap[name].getStatus()))
+        print("  @ {0}".format(userMap[name].getUpdatedTime()))
+        if privileged and sessionMap[sessKey].getUsername() == name:
+            print("  edit: ./app 'session {0} edit'".format(sessKey))
+    if len(listOfPeopleToPrint) == 0:
+        print("No one is here...")
+    print("find: ./app 'find <pattern>'")
+    print("sort: ./app 'sort[ username|name|status|updated[ asc|desc]]'")
+    if privileged:
+        print("update: ./app 'session {0} update (name=\"<value>\"|status=\"<value>\")+'".format(sessKey))
+        print("home: ./app ['session {0}']".format(sessKey))
+    else:
+        print("join: ./app 'join'")
+        print("create: ./app 'create username=\"<value>\" password=\"<value>\" name=\"<value>\" status=\"<value>\"'")
+        print("home: ./app")

@@ -2,7 +2,7 @@ import Class
 import sys
 import json
 import os
-from util import Flush, loginSuccessMsg, welcomeMsg, readData, joinInputs, createNewUser, sessionCheck, personDetailsWithoutPrivilege, personDetailsWithPrivilege, editUser
+from util import Flush, loginSuccessMsg, welcomeMsg, readData, joinInputs, createNewUser, sessionCheck, personDetailsWithoutPrivilege, personDetailsWithPrivilege, editUser, printPeople
 
 
 def loginFlow(Args, userMap):
@@ -89,6 +89,9 @@ def logoutFlow(Args, userMap, sessionMap):
     print("[you are now logged out]")
     welcomeMsg()
 
+def peopleFlow(userMap, privileged, sessKey, sessionMap):
+    printPeople(userMap, privileged, sessKey, sessionMap)
+
 
 def main():
     nArgs = len(sys.argv)
@@ -113,6 +116,8 @@ def main():
         Flush(userMap)
     elif Args[0] == "show":
         showFlow(Args, userMap, False, "NA", Args[1] if len(Args)==2 else "NA")
+    elif Args[0] == 'people':
+        peopleFlow(userMap, False, "NA", sessionMap)
     elif Args[0] == "session":
         if not sessionCheck(Args, sessionMap):
             return
@@ -126,6 +131,8 @@ def main():
             editFlow(Args, sessionMap, userMap)
         if Args[2] == "logout" and len(Args) == 3:
             logoutFlow(Args, userMap, sessionMap)
+        if Args[2] == "people":
+            peopleFlow(userMap, True, Args[1])
     elif Args[0] == "delete" or Args[0] == "edit" or Args[0] == "logout":
         print("invalid request: missing session token")
         print("home: ./app")
