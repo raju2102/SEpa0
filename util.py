@@ -142,8 +142,11 @@ def personDetailsWithPrivilege(user, personal, personalKey):
     print("people: ./app '[session {0} ]people'".format(personalKey))
     print("home: ./app ['session {0}']".format(personalKey))
     
-def printPeople(listOfPeopleToPrint, userMap, privileged, sessKey, sessionMap):
-    print("People")
+def printPeople(listOfPeopleToPrint, userMap, privileged, sessKey, sessionMap, sortMsg):
+    if sortMsg != "":
+        print("People (sorted by {0})".format(sortMsg))
+    else:
+        print("People")
     print("------")
     for name in listOfPeopleToPrint:
         print("{0} @{1} (./app 'show {1}')".format(userMap[name].getName(), userMap[name].getUsername()))

@@ -67,7 +67,7 @@ def showFlow(Args, userMap, privilege, personal, personalKey):
     if not privilege:
         if Args[1] == "people":
             listOfPeopleToPrint = sorted(userMap, key=lambda User:userMap[User].getName())
-            printPeople(listOfPeopleToPrint, userMap, False, "NA", False)
+            printPeople(listOfPeopleToPrint, userMap, False, "NA", False, "")
             return
         personDetailsWithoutPrivilege(userMap[Args[1]])
     else:
@@ -95,32 +95,41 @@ def logoutFlow(Args, userMap, sessionMap):
 
 def peopleFlow(userMap, privileged, sessKey, sessionMap):
     listOfPeopleToPrint = userMap.keys()
-    printPeople(listOfPeopleToPrint, userMap, privileged, sessKey, sessionMap)
+    printPeople(listOfPeopleToPrint, userMap, privileged, sessKey, sessionMap, "")
 
 def sortFlow(Args, userMap):
+    sortMsg = ""
     if len(Args) == 1 or (len(Args) == 3 and Args[1] == "updated" and Args[2] == "desc") or (len(Args) == 2 and Args[1] == "updated"):
         listOfPeopleToPrint = sorted(userMap, key=lambda User:time.mktime(time.strptime(userMap[User].getUpdatedTime(), '%Y-%m-%d %H:%M:%S')), reverse=True)
-        printPeople(listOfPeopleToPrint, userMap, False, "NA", False)
+        sortMsg = "updated, newest"
+        printPeople(listOfPeopleToPrint, userMap, False, "NA", False, sortMsg)
     if (len(Args) == 2 or (len(Args) == 3 and Args[2] == "asc")) and Args[1] in ["username", "name", "status", "updated"]:
         if Args[1] == "username":
             listOfPeopleToPrint = sorted(userMap, key=lambda User:userMap[User].getUsername())
+            sortMsg = "username, a-z"
         elif Args[1] == "name":
             listOfPeopleToPrint = sorted(userMap, key=lambda User:userMap[User].getName())
+            sortMsg = "name, a-z"
         elif Args[1] == "status":
              listOfPeopleToPrint = sorted(userMap, key=lambda User:userMap[User].getStatus())
+             sortMsg = "status, a-z"
         elif Args[1] == "updated":
             listOfPeopleToPrint = sorted(userMap, key=lambda User:time.mktime(time.strptime(userMap[User].getUpdatedTime(), '%Y-%m-%d %H:%M:%S')))
-        printPeople(listOfPeopleToPrint, userMap, False, "NA", False)
+            sortMsg = "updated, oldest"
+        printPeople(listOfPeopleToPrint, userMap, False, "NA", False, sortMsg)
     if len(Args) == 3 and Args[2] == "desc":
         if Args[1] == "username":
             listOfPeopleToPrint = sorted(userMap, key=lambda User:userMap[User].getUsername(), reverse=True)
+            sortMsg = "username, z-a"
         elif Args[1] == "name":
             listOfPeopleToPrint = sorted(userMap, key=lambda User:userMap[User].getName(), reverse=True)
+            sortMsg = "name, z-a"
         elif Args[1] == "status":
              listOfPeopleToPrint = sorted(userMap, key=lambda User:userMap[User].getStatus(), reverse=True)
-        printPeople(listOfPeopleToPrint, userMap, False, "NA", False)
+             sortMsg = "status, z-a"
+        printPeople(listOfPeopleToPrint, userMap, False, "NA", False, sortMsg)
     else:
-        print("unknown sort fields")
+        print("sort field not found")
 
 
 def main():
