@@ -1,28 +1,20 @@
 {
     "users": {
-        "alice": {
-            "Username": "alice",
+        "zlice": {
+            "Username": "zlice",
             "Name": "Alice",
             "Password": "password",
-            "Status": "talking to bob",
-            "SessionKey": "BJsDfflptLhe",
-            "UpdatedTime": "2024-08-26 09:56:02"
+            "Status": "listening to bob",
+            "SessionKey": "QBaZwlw6dhLb",
+            "UpdatedTime": "2024-08-26 11:00:47"
         },
-        "bob": {
-            "Username": "bob",
+        "mob": {
+            "Username": "mob",
             "Name": "Bob",
             "Password": "password",
             "Status": "talking to alice",
-            "SessionKey": "ZnDQtKSRIUNC",
-            "UpdatedTime": "2024-08-26 09:56:02"
-        },
-        "eve": {
-            "Username": "eve",
-            "Name": "Eve",
-            "Password": "password",
-            "Status": "listening to alice and bob",
-            "SessionKey": "ZEdqVIGEJJFC",
-            "UpdatedTime": "2024-08-26 09:56:02"
+            "SessionKey": "CXzX05ptbRsu",
+            "UpdatedTime": "2024-08-26 11:00:49"
         }
     }
 }

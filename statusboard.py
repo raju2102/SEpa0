@@ -3,7 +3,7 @@ import sys
 import json
 import os
 from util import Flush, loginSuccessMsg, welcomeMsg, readData, joinInputs, createNewUser, sessionCheck, personDetailsWithoutPrivilege, personDetailsWithPrivilege, editUser, printPeople
-
+import time
 
 def loginFlow(Args, userMap):
     if len(Args) >= 3:
@@ -57,14 +57,18 @@ def joinFlow(Args, userMap):
 def showFlow(Args, userMap, privilege, personal, personalKey):
     print(personal)
     if (len(Args) != 2 and not privilege) or (len(Args) != 4 and privilege):
-        print("iinvalid request: missing username")
+        print("invalid request: missing username")
         print("home: ./app")
         return
-    if (not privilege and Args[1] not in userMap.keys()) or (privilege and Args[3] not in userMap.keys()):
+    if (not privilege and not (Args[1] in userMap.keys() or Args[1] == "people")) or (privilege and Args[3] not in userMap.keys()):
         print("username not found")
         print("home: ./app")
         return
     if not privilege:
+        if Args[1] == "people":
+            listOfPeopleToPrint = sorted(userMap, key=lambda User:userMap[User].getName())
+            printPeople(listOfPeopleToPrint, userMap, False, "NA", False)
+            return
         personDetailsWithoutPrivilege(userMap[Args[1]])
     else:
         personDetailsWithPrivilege(userMap[Args[3]], personal, personalKey)
@@ -90,7 +94,33 @@ def logoutFlow(Args, userMap, sessionMap):
     welcomeMsg()
 
 def peopleFlow(userMap, privileged, sessKey, sessionMap):
-    printPeople(userMap, privileged, sessKey, sessionMap)
+    listOfPeopleToPrint = userMap.keys()
+    printPeople(listOfPeopleToPrint, userMap, privileged, sessKey, sessionMap)
+
+def sortFlow(Args, userMap):
+    if len(Args) == 1 or (len(Args) == 3 and Args[1] == "updated" and Args[2] == "desc") or (len(Args) == 2 and Args[1] == "updated"):
+        listOfPeopleToPrint = sorted(userMap, key=lambda User:time.mktime(time.strptime(userMap[User].getUpdatedTime(), '%Y-%m-%d %H:%M:%S')), reverse=True)
+        printPeople(listOfPeopleToPrint, userMap, False, "NA", False)
+    if (len(Args) == 2 or (len(Args) == 3 and Args[2] == "asc")) and Args[1] in ["username", "name", "status", "updated"]:
+        if Args[1] == "username":
+            listOfPeopleToPrint = sorted(userMap, key=lambda User:userMap[User].getUsername())
+        elif Args[1] == "name":
+            listOfPeopleToPrint = sorted(userMap, key=lambda User:userMap[User].getName())
+        elif Args[1] == "status":
+             listOfPeopleToPrint = sorted(userMap, key=lambda User:userMap[User].getStatus())
+        elif Args[1] == "updated":
+            listOfPeopleToPrint = sorted(userMap, key=lambda User:time.mktime(time.strptime(userMap[User].getUpdatedTime(), '%Y-%m-%d %H:%M:%S')))
+        printPeople(listOfPeopleToPrint, userMap, False, "NA", False)
+    if len(Args) == 3 and Args[2] == "desc":
+        if Args[1] == "username":
+            listOfPeopleToPrint = sorted(userMap, key=lambda User:userMap[User].getUsername(), reverse=True)
+        elif Args[1] == "name":
+            listOfPeopleToPrint = sorted(userMap, key=lambda User:userMap[User].getName(), reverse=True)
+        elif Args[1] == "status":
+             listOfPeopleToPrint = sorted(userMap, key=lambda User:userMap[User].getStatus(), reverse=True)
+        printPeople(listOfPeopleToPrint, userMap, False, "NA", False)
+    else:
+        print("unknown sort fields")
 
 
 def main():
@@ -136,6 +166,9 @@ def main():
     elif Args[0] == "delete" or Args[0] == "edit" or Args[0] == "logout":
         print("invalid request: missing session token")
         print("home: ./app")
+    elif Args[0] == 'sort':
+        sortFlow(Args, userMap)
+        
         
             
 
