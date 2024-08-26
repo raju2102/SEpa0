@@ -79,6 +79,7 @@ def createNewUser(newUserData, userMap):
             return False
     userMap[newUserData["Username"]] = Class.User(newUserData["Username"], newUserData["Name"], newUserData["Status"], newUserData["Password"], "NA")
     userMap[newUserData["Username"]].generateSessionkey()
+    userMap[newUserData["Username"]].setCurrenttime()
     createSuccessMsg(userMap[newUserData["Username"]])
     return userMap
 
@@ -94,13 +95,34 @@ def sessionCheck(Args, sessionMap):
             print("home: ./app")
     return False
 
+def editUser(Args, sessionMap, userMap):
+    print("Edit Person")
+    print("------")
+    print("leave blank to keep [current value]")
+    newName = input("name [{0}]: ".format(userMap[sessionMap[Args[1]].getUsername()].getName()))
+    updateStat = ""
+    if newName != "":
+        userMap[sessionMap[Args[1]].getUsername()].setName(newName)
+        userMap[sessionMap[Args[1]].getUsername()].setCurrenttime()
+        updateStat += "name"
+    
+    newStatus = input("status [{0}]: ".format(userMap[sessionMap[Args[1]].getUsername()].getStatus()))
+    if newStatus != "":
+        userMap[sessionMap[Args[1]].getUsername()].setStatus(newStatus)
+        userMap[sessionMap[Args[1]].getUsername()].setCurrenttime()
+        if updateStat != "":
+            updateStat += " and "
+        updateStat += "status"
+    return userMap, updateStat
+
+
 def personDetailsWithoutPrivilege(user):
     print("Person")
     print("------")
     print("name: {0}".format(user.getName()))
     print("username: {0}".format(user.getUsername()))
     print("status: {0}".format(user.getStatus()))
-    print("updated: 2024-07-19 14:29:02")
+    print("updated: {0}".format(user.getUpdatedTime()))
 
     print("people: ./app 'people'")
     print("home: ./app")
@@ -111,15 +133,11 @@ def personDetailsWithPrivilege(user, personal, personalKey):
     print("name: {0}".format(user.getName()))
     print("username: {0}".format(user.getUsername()))
     print("status: {0}".format(user.getStatus()))
-    print("updated: 2024-07-19 14:29:02")
+    print("updated: {0}".format(user.getUpdatedTime()))
     if personal:
         print("edit: ./app 'session {0} edit'".format(personalKey))
         print("update: ./app 'session {0} update (name=\"<value>\"|status=\"<value>\")+'".format(personalKey))
         print("delete: ./app 'session {0} delete'".format(personalKey))
-    # else:
-    #     personal = user.getSessionkey()
-    #     print(personal)
-    
     print("logout: ./app 'session {0} logout'".format(personalKey))
     print("people: ./app '[session {0} ]people'".format(personalKey))
     print("home: ./app ['session {0}']".format(personalKey))

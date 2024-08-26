@@ -2,7 +2,7 @@ import Class
 import sys
 import json
 import os
-from util import Flush, loginSuccessMsg, welcomeMsg, readData, joinInputs, createNewUser, sessionCheck, personDetailsWithoutPrivilege, personDetailsWithPrivilege
+from util import Flush, loginSuccessMsg, welcomeMsg, readData, joinInputs, createNewUser, sessionCheck, personDetailsWithoutPrivilege, personDetailsWithPrivilege, editUser
 
 
 def loginFlow(Args, userMap):
@@ -76,6 +76,19 @@ def deleteFlow(sessionKeyToDelete, userMap, sessionMap):
     welcomeMsg()
     return
 
+def editFlow(Args, sessionMap, userMap):
+    userMap, updateStat = editUser(Args, sessionMap, userMap)
+    Flush(userMap)
+    print("[{0} updated]".format(updateStat))
+    personDetailsWithPrivilege(userMap[sessionMap[Args[1]].getUsername()], True, Args[1])
+    return
+
+def logoutFlow(Args, userMap, sessionMap):
+    userMap[sessionMap[Args[1]].getUsername()].deleteSessionkey()
+    Flush(userMap)
+    print("[you are now logged out]")
+    welcomeMsg()
+
 
 def main():
     nArgs = len(sys.argv)
@@ -109,8 +122,13 @@ def main():
             showFlow(Args, userMap, True, sessionMap[Args[1]].getUsername()==Args[3], Args[1])
         if Args[2] == "delete":
             deleteFlow(Args[1], userMap, sessionMap)
-    elif Args[0] == 'delete':
+        if Args[2] == "edit" and len(Args) == 3:
+            editFlow(Args, sessionMap, userMap)
+        if Args[2] == "logout" and len(Args) == 3:
+            logoutFlow(Args, userMap, sessionMap)
+    elif Args[0] == "delete" or Args[0] == "edit" or Args[0] == "logout":
         print("invalid request: missing session token")
+        print("home: ./app")
         
             
 
