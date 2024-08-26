@@ -2,7 +2,7 @@ import Class
 import sys
 import json
 import os
-from util import Flush, loginSuccessMsg, welcomeMsg, readData, joinInputs, createNewUser, sessionCheck
+from util import Flush, loginSuccessMsg, welcomeMsg, readData, joinInputs, createNewUser, sessionCheck, personDetailsWithoutPrivilege, personDetailsWithPrivilege
 
 
 def loginFlow(Args, userMap):
@@ -53,7 +53,21 @@ def joinFlow(Args, userMap):
         print("home: ./app")
         return False
     return createNewUser(newUserData, userMap)
-    return userMap
+
+def showFlow(Args, userMap, privilege, personal, personalKey):
+    print(personal)
+    if (len(Args) != 2 and not privilege) or (len(Args) != 4 and privilege):
+        print("iinvalid request: missing username")
+        print("home: ./app")
+        return
+    if (not privilege and Args[1] not in userMap.keys()) or (privilege and Args[3] not in userMap.keys()):
+        print("username not found")
+        print("home: ./app")
+        return
+    if not privilege:
+        personDetailsWithoutPrivilege(userMap[Args[1]])
+    else:
+        personDetailsWithPrivilege(userMap[Args[3]], personal, personalKey)
 
 
 def main():
@@ -78,11 +92,17 @@ def main():
         if not userMap:
             return
         Flush(userMap)
-    elif Args[0] == "session":
+    elif Args[0] == "show":
+        showFlow(Args, userMap, False, "NA", Args[1] if len(Args)==2 else "NA")
+    elif Args[0] == "session" and len(Args) > 3:
         if not sessionCheck(Args, sessionMap):
             return
         if len(Args) == 3 and Args[2] == "home": 
             loginSuccessMsg(userMap[sessionMap[Args[1]].getUsername()])
+        if Args[2] == "show": 
+            showFlow(Args, userMap, True, sessionMap[Args[1]].getUsername()==Args[3], Args[1])
+    elif Args[0] == "session" and len(Args) == 1:
+        print("access denied: missing session token")
         
             
 

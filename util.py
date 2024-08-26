@@ -92,4 +92,34 @@ def sessionCheck(Args, sessionMap):
             print("invalid request: invalid session token")
             print("home: ./app")
     return False
+
+def personDetailsWithoutPrivilege(user):
+    print("Person")
+    print("------")
+    print("name: {0}".format(user.getName()))
+    print("username: {0}".format(user.getUsername()))
+    print("status: {0}".format(user.getStatus()))
+    print("updated: 2024-07-19 14:29:02")
+
+    print("people: ./app 'people'")
+    print("home: ./app")
+
+def personDetailsWithPrivilege(user, personal, personalKey):
+    print("Person")
+    print("------")
+    print("name: {0}".format(user.getName()))
+    print("username: {0}".format(user.getUsername()))
+    print("status: {0}".format(user.getStatus()))
+    print("updated: 2024-07-19 14:29:02")
+    if personal:
+        print("edit: ./app 'session {0} edit'".format(personalKey))
+        print("update: ./app 'session {0} update (name=\"<value>\"|status=\"<value>\")+'".format(personalKey))
+        print("delete: ./app 'session {0} delete'".format(personalKey))
+    # else:
+    #     personal = user.getSessionkey()
+    #     print(personal)
+    
+    print("logout: ./app 'session {0} logout'".format(personalKey))
+    print("people: ./app '[session {0} ]people'".format(personalKey))
+    print("home: ./app ['session {0}']".format(personalKey))
     
