@@ -2,7 +2,7 @@ import Class
 import sys
 import json
 import os
-from util import Flush, loginSuccessMsg, welcomeMsg, readData, joinInputs, createNewUser, sessionCheck, personDetailsWithoutPrivilege, personDetailsWithPrivilege, editUser, printPeople
+from util import Flush, loginSuccessMsg, welcomeMsg, readData, joinInputs, createNewUser, sessionCheck, personDetailsWithoutPrivilege, personDetailsWithPrivilege, editUser, printPeople, findMatchingUsers
 import time
 
 def loginFlow(Args, userMap):
@@ -39,7 +39,14 @@ def createFlow(Args, userMap):
         if end == -1:
             print("invalid set of creds")
             return False
+        if not (end+1 == len(creds) or creds[end+1] == " "):
+            if key == "Username":
+                print("failed to create: invalid username")
+            else:
+                print("failed to create: {0} contains double quote".format(key.lower()))
+            return False
         requiredKeyList[key] = creds[start+len(value): end]
+    print(creds)
     return createNewUser(requiredKeyList, userMap)
 
 
@@ -101,35 +108,48 @@ def sortFlow(Args, userMap):
     sortMsg = ""
     if len(Args) == 1 or (len(Args) == 3 and Args[1] == "updated" and Args[2] == "desc") or (len(Args) == 2 and Args[1] == "updated"):
         listOfPeopleToPrint = sorted(userMap, key=lambda User:time.mktime(time.strptime(userMap[User].getUpdatedTime(), '%Y-%m-%d %H:%M:%S')), reverse=True)
-        sortMsg = "updated, newest"
+        sortMsg = "(sorted by updated, newest)"
         printPeople(listOfPeopleToPrint, userMap, False, "NA", False, sortMsg)
     if (len(Args) == 2 or (len(Args) == 3 and Args[2] == "asc")) and Args[1] in ["username", "name", "status", "updated"]:
         if Args[1] == "username":
             listOfPeopleToPrint = sorted(userMap, key=lambda User:userMap[User].getUsername())
-            sortMsg = "username, a-z"
+            sortMsg = "(sorted by username, a-z)"
         elif Args[1] == "name":
             listOfPeopleToPrint = sorted(userMap, key=lambda User:userMap[User].getName())
-            sortMsg = "name, a-z"
+            sortMsg = "(sorted by name, a-z)"
         elif Args[1] == "status":
              listOfPeopleToPrint = sorted(userMap, key=lambda User:userMap[User].getStatus())
-             sortMsg = "status, a-z"
+             sortMsg = "(sorted by status, a-z)"
         elif Args[1] == "updated":
             listOfPeopleToPrint = sorted(userMap, key=lambda User:time.mktime(time.strptime(userMap[User].getUpdatedTime(), '%Y-%m-%d %H:%M:%S')))
-            sortMsg = "updated, oldest"
+            sortMsg = "(sorted by updated, oldest)"
         printPeople(listOfPeopleToPrint, userMap, False, "NA", False, sortMsg)
     if len(Args) == 3 and Args[2] == "desc":
         if Args[1] == "username":
             listOfPeopleToPrint = sorted(userMap, key=lambda User:userMap[User].getUsername(), reverse=True)
-            sortMsg = "username, z-a"
+            sortMsg = "(sorted by username, z-a)"
         elif Args[1] == "name":
             listOfPeopleToPrint = sorted(userMap, key=lambda User:userMap[User].getName(), reverse=True)
-            sortMsg = "name, z-a"
+            sortMsg = "(sorted by name, z-a)"
         elif Args[1] == "status":
              listOfPeopleToPrint = sorted(userMap, key=lambda User:userMap[User].getStatus(), reverse=True)
-             sortMsg = "status, z-a"
+             sortMsg = "(sorted by status, z-a)"
         printPeople(listOfPeopleToPrint, userMap, False, "NA", False, sortMsg)
     else:
         print("sort field not found")
+
+def findFlow(Args, userMap):
+    if len(Args) == 1:
+        printPeople(userMap.keys(), userMap, False, "NA", False, "(find all)")
+    elif len(Args) == 2 and Args[1][-1] != ":":
+        listOfPeopleToPrint = findMatchingUsers(userMap,  Args[1][:-1], "")
+        printPeople(listOfPeopleToPrint, userMap, False, "NA", False, "(find \"{0}\" in any)".format(Args[1]))
+    elif len(Args) >= 3 and Args[1][-1] == ":" and Args[1][:-1] in ["username", "name", "status", "updated"]:
+        listOfPeopleToPrint = findMatchingUsers(userMap, " ".join(Args[2:]), Args[1][:-1])
+        printPeople(listOfPeopleToPrint, userMap, False, "NA", False, "(find \"{0}\" in {1})".format(Args[2], Args[1][:-1]))
+    else:
+        listOfPeopleToPrint = findMatchingUsers(userMap, " ".join(Args[1:]), "")
+        printPeople(listOfPeopleToPrint, userMap, False, "NA", False, "(find \"{0}\" in any)".format(" ".join(Args[1:])))
 
 
 def main():
@@ -171,12 +191,18 @@ def main():
         if Args[2] == "logout" and len(Args) == 3:
             logoutFlow(Args, userMap, sessionMap)
         if Args[2] == "people":
-            peopleFlow(userMap, True, Args[1])
+            peopleFlow(userMap, True, Args[1], sessionMap)
     elif Args[0] == "delete" or Args[0] == "edit" or Args[0] == "logout":
         print("invalid request: missing session token")
         print("home: ./app")
     elif Args[0] == 'sort':
         sortFlow(Args, userMap)
+    elif Args[0] == 'find':
+        findFlow(Args, userMap)
+
+    else:
+        print("resource not found")
+        print("home: ./app")
         
         
             

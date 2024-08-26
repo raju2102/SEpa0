@@ -2,6 +2,7 @@ import Class
 import sys
 import json
 import os
+import re
 
 def Flush(userMap):
     userMapToFlush = {}
@@ -72,10 +73,64 @@ def joinInputs():
 
 
 def createNewUser(newUserData, userMap):
+
+    if '"' in newUserData["Username"]:
+        print("failed to create: invalid username")
+        return False
+    
+    givenUsername = newUserData["Username"]
+    newUserData["Username"] = newUserData["Username"].lower()
+    if len(newUserData["Username"]) < 3:
+        # print("aaaa", newUserData["Username"])
+        print("failed to create: username is too short")
+        return False
+    
+    if len(newUserData["Username"]) > 20:
+        print("failed to create: username is too long")
+        return False
+
+    if '"' in newUserData["Status"]:
+        print("failed to create: status contains double quote")
+        return False
+    
+    if '"' in newUserData["Name"]:
+        print("failed to create: name contains double quote")
+        return False
+    
+    if '"' in newUserData["Password"]:
+        print("failed to create: password contains double quote")
+        return False
+
+    pattern = re.compile(r'^[a-zA-Z0-9_]+$')
+    if not bool(pattern.match(newUserData["Username"])):
+        print("failed to create: invalid username")
+        return False  
+    
+    if len(newUserData["Password"]) < 4:
+        print(newUserData["Password"])
+        print("failed to create: password is too short")
+        return False
+    
+    if len(newUserData["Name"]) == 0:
+        print("failed to create: name is too short")
+        return False
+    
+    if len(newUserData["Name"]) > 30:
+        print("failed to create: name is too long")
+        return False
+    
+    if len(newUserData["Status"]) == 0:
+        print("failed to create: status is too short")
+        return False
+    
+    if len(newUserData["Status"]) > 100:
+        print("failed to create: status is too long")
+        return False
+    
+
     for _, value in userMap.items():
         if newUserData["Username"] == value.getUsername():
-            print(value.getUsername())
-            print("username already exists. please try again with different username")
+            print("failed to create: {0} is already registered".format(givenUsername))
             return False
     userMap[newUserData["Username"]] = Class.User(newUserData["Username"], newUserData["Name"], newUserData["Status"], newUserData["Password"], "NA")
     userMap[newUserData["Username"]].generateSessionkey()
@@ -144,7 +199,7 @@ def personDetailsWithPrivilege(user, personal, personalKey):
     
 def printPeople(listOfPeopleToPrint, userMap, privileged, sessKey, sessionMap, sortMsg):
     if sortMsg != "":
-        print("People (sorted by {0})".format(sortMsg))
+        print("People {0}".format(sortMsg))
     else:
         print("People")
     print("------")
@@ -165,3 +220,22 @@ def printPeople(listOfPeopleToPrint, userMap, privileged, sessKey, sessionMap, s
         print("join: ./app 'join'")
         print("create: ./app 'create username=\"<value>\" password=\"<value>\" name=\"<value>\" status=\"<value>\"'")
         print("home: ./app")
+
+def findMatchingUsers(userMap, key, fieldsToSearch):
+    listOfPeopleToPrint = []
+    funcs = []
+    if fieldsToSearch == "":
+        funcs = [Class.User.getUsername, Class.User.getName, Class.User.getStatus, Class.User.getUpdatedTime]
+    elif fieldsToSearch == "username":
+        funcs = [Class.User.getUsername]
+    elif fieldsToSearch == "name":
+        funcs = [Class.User.getName]
+    elif fieldsToSearch == "status":
+        funcs = [Class.User.getStatus]
+    elif fieldsToSearch == "updated":
+        funcs = [Class.User.getUpdatedTime]
+    for uname, user in userMap.items():
+        for func in funcs:
+            if key in func(user):
+                listOfPeopleToPrint.append(uname) 
+    return listOfPeopleToPrint
