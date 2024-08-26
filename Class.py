@@ -47,8 +47,6 @@ class User:
     def deleteSessionkey(self):
         self.SessionKey = "NA"
     
-    def modifyUsername(self, uname):
-        self.Username = uname
 
     def modifyStatus(self, status):
         self.Status = status
