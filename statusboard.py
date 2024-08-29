@@ -1,5 +1,5 @@
 import sys
-from util import Flush, loginSuccessMsg, welcomeMsg, readData, sessionCheck
+from main import Flush, loginSuccessMsg, welcomeMsg, readData, sessionCheck
 from flows import loginFlow, createFlow, joinFlow, showFlow, deleteFlow, editFlow, logoutFlow, peopleFlow, sortFlow, findFlow, updateFlow
 
 def main():

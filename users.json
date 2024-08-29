@@ -1,3 +1,12 @@
 {
-    "users": {}
+    "users": {
+        "username": {
+            "Username": "username",
+            "Name": "name",
+            "Password": "pass",
+            "Status": "stat",
+            "SessionKey": "Qdx2ST7zsZaG",
+            "UpdatedTime": "NA"
+        }
+    }
 }

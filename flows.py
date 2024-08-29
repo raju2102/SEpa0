@@ -1,4 +1,4 @@
-from util import Flush, loginSuccessMsg, welcomeMsg, joinInputs, createNewUser, personDetailsWithoutPrivilege, personDetailsWithPrivilege, editUser, printPeople, findMatchingUsers
+from main import Flush, loginSuccessMsg, welcomeMsg, joinInputs, createNewUser, personDetailsWithoutPrivilege, personDetailsWithPrivilege, editUser, printPeople, findMatchingUsers
 import time
 
 def loginFlow(Args, userMap):

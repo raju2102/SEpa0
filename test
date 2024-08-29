@@ -1,0 +1,15 @@
+#!/usr/bin/bash
+output=$(pytest --cov=main test.py --cov-report term --disable-warnings)
+outputForPassedTests=$(pytest --cov=main test.py --cov-report term --disable-warnings -q)
+
+coverage=$(echo "$output" | awk '/TOTAL/ {print $4}')
+
+total_tests=$(echo "$output" | awk '/collected/ {print $2}')
+passing_tests=$(echo "$outputForPassedTests" | awk '/passed/ {print $1}' | tr -d '()')
+
+pass_percentage=$(echo "scale=2; ($passing_tests / $total_tests) * 100" | bc)
+echo "passing: ${pass_percentage}%"
+echo "coverage: $coverage"
+
+
+

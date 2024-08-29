@@ -50,7 +50,7 @@ def createSuccessMsg(user):
     print("name: {0}".format(user.getName()))
     print("username: {0}".format(user.getUsername()))
     print("status: {0}".format(user.getStatus()))
-    print("updated: 2024-07-19 15:34:26")
+    print("updated: {0}".format(user.getUpdatedTime()))
 
     print("edit: ./app 'session {0} edit'".format(user.getSessionkey()))
     print("update: ./app 'session {0} update (name=\"<value>\"|status=\"<value>\")+'".format(user.getSessionkey()))
@@ -73,7 +73,7 @@ def joinInputs():
 
 
 def createNewUser(newUserData, userMap):
-
+    print(newUserData)
     if '"' in newUserData["Username"]:
         print("failed to create: invalid username")
         return False
